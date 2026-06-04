@@ -1,0 +1,54 @@
+# Credentials and local config (never commit real credentials)
+config/db_config.json
+
+# Data files — too large for git
+data/raw/*.csv
+data/interim/*.csv
+data/interim/monthly/*.csv
+data/monthly/*.csv
+data/processed/*.csv
+data/monthly/*.parquet
+
+# Model artifacts
+models/*.pkl
+models/*.joblib
+models/*.lgbm
+
+# MLflow local store
+mlruns/
+mlartifacts/
+
+# Airflow metadata and logs
+logs/
+*.log
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Jupyter (not part of this repo)
+*.ipynb
+.ipynb_checkpoints/
