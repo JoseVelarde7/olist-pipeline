@@ -15,11 +15,11 @@ x-airflow-common:
     AIRFLOW__WEBSERVER__SECRET_KEY: 'olist_sprint2_secret'
     # Olist DB — host.docker.internal resuelve a la maquina host desde dentro de Docker
     # Esto permite que Airflow se conecte al MariaDB local ya existente con los datos
-    OLIST_DB_HOST: host.docker.internal
-    OLIST_DB_PORT: '3306'
-    OLIST_DB_USER: teju_admin
-    OLIST_DB_PASSWORD: 'teju2026##'
-    OLIST_DB_NAME: olist
+    OLIST_DB_HOST: ${OLIST_DB_HOST:-host.docker.internal}
+    OLIST_DB_PORT: ${OLIST_DB_PORT:-3306}
+    OLIST_DB_USER: ${OLIST_DB_USER}
+    OLIST_DB_PASSWORD: ${OLIST_DB_PASSWORD}
+    OLIST_DB_NAME: ${OLIST_DB_NAME:-olist}
     # MLflow — URL interna de la red Docker
     MLFLOW_TRACKING_URI: http://mlflow:5000
     PYTHONPATH: /opt/airflow
