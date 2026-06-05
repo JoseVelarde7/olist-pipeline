@@ -23,7 +23,7 @@ x-airflow-common:
     # MLflow — URL interna de la red Docker
     MLFLOW_TRACKING_URI: http://mlflow:5000
     PYTHONPATH: /opt/airflow
-    _PIP_ADDITIONAL_REQUIREMENTS: "polars duckdb lightgbm shap"
+    _PIP_ADDITIONAL_REQUIREMENTS: "polars duckdb lightgbm statsmodels numpy<2 mlflow==2.20.0"
   volumes:
     - ./dags:/opt/airflow/dags
     - ./src:/opt/airflow/src
@@ -64,17 +64,7 @@ services:
   airflow-init:
     <<: *airflow-common
     container_name: olist_airflow_init
-    command: >
-      bash -c "
-        airflow db init &&
-        airflow users create
-          --username admin
-          --firstname Admin
-          --lastname Olist
-          --role Admin
-          --email pepevelarde7@gmail.com
-          --password admin123
-      "
+    command: bash -c "airflow db init && airflow users create --username admin --firstname Admin --lastname Olist --role Admin --email pepevelarde7@gmail.com --password admin123"
     depends_on:
       <<: *airflow-depends-on
 
