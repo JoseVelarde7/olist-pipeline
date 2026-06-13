@@ -1,0 +1,16 @@
+number,mae,datetime_start,datetime_complete,duration,params_naive_rule,state,category,model_family,selected_rule
+4,46.0,2026-06-13 01:37:26.222376,2026-06-13 01:37:26.222414,0 days 00:00:00.000038,naive_lag_1,COMPLETE,beleza_saude,naive,naive_lag_1
+0,70.5,2026-06-13 01:37:26.221697,2026-06-13 01:37:26.222102,0 days 00:00:00.000405,naive_ma_2,COMPLETE,beleza_saude,naive,naive_ma_2
+2,70.5,2026-06-13 01:37:26.222260,2026-06-13 01:37:26.222311,0 days 00:00:00.000051,naive_ma_2,COMPLETE,beleza_saude,naive,naive_ma_2
+1,73.73333333333333,2026-06-13 01:37:26.222132,2026-06-13 01:37:26.222244,0 days 00:00:00.000112,naive_wma_3,COMPLETE,beleza_saude,naive,naive_wma_3
+3,73.73333333333333,2026-06-13 01:37:26.222322,2026-06-13 01:37:26.222367,0 days 00:00:00.000045,naive_wma_3,COMPLETE,beleza_saude,naive,naive_wma_3
+0,20.2,2026-06-13 01:37:38.189538,2026-06-13 01:37:38.189645,0 days 00:00:00.000107,naive_ma_2,COMPLETE,cama_mesa_banho,naive,naive_ma_2
+2,20.2,2026-06-13 01:37:38.189766,2026-06-13 01:37:38.189811,0 days 00:00:00.000045,naive_ma_2,COMPLETE,cama_mesa_banho,naive,naive_ma_2
+1,35.83333333333333,2026-06-13 01:37:38.189680,2026-06-13 01:37:38.189754,0 days 00:00:00.000074,naive_wma_3,COMPLETE,cama_mesa_banho,naive,naive_wma_3
+3,35.83333333333333,2026-06-13 01:37:38.189820,2026-06-13 01:37:38.189861,0 days 00:00:00.000041,naive_wma_3,COMPLETE,cama_mesa_banho,naive,naive_wma_3
+4,51.4,2026-06-13 01:37:38.189870,2026-06-13 01:37:38.189907,0 days 00:00:00.000037,naive_lag_1,COMPLETE,cama_mesa_banho,naive,naive_lag_1
+4,70.6,2026-06-13 01:37:48.502486,2026-06-13 01:37:48.502522,0 days 00:00:00.000036,naive_lag_1,COMPLETE,esporte_lazer,naive,naive_lag_1
+0,91.4,2026-06-13 01:37:48.502142,2026-06-13 01:37:48.502257,0 days 00:00:00.000115,naive_ma_2,COMPLETE,esporte_lazer,naive,naive_ma_2
+2,91.4,2026-06-13 01:37:48.502371,2026-06-13 01:37:48.502424,0 days 00:00:00.000053,naive_ma_2,COMPLETE,esporte_lazer,naive,naive_ma_2
+1,94.33333333333333,2026-06-13 01:37:48.502280,2026-06-13 01:37:48.502355,0 days 00:00:00.000075,naive_wma_3,COMPLETE,esporte_lazer,naive,naive_wma_3
+3,94.33333333333333,2026-06-13 01:37:48.502435,2026-06-13 01:37:48.502478,0 days 00:00:00.000043,naive_wma_3,COMPLETE,esporte_lazer,naive,naive_wma_3

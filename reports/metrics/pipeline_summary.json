@@ -1,21 +1,28 @@
 {
-  "execution_date": "2026-06-05T22:04:50.395368",
-  "model": "ARIMA",
-  "arima_order": "(1, 1, 1)",
-  "n_categories": 72,
+  "execution_date": "2026-06-13T01:37:57.387446",
+  "model": "ARIMA+Optuna",
+  "n_categories": 3,
   "train_end": "2017-12-01",
   "val_end": "2018-05-01",
+  "optuna": {
+    "n_trials_arima": 40,
+    "n_trials_naive": 20
+  },
   "metrics": {
     "validation": {
-      "arima_mape": 62.1718,
-      "naive_mape": 40.5849
+      "selected_mape": 8.4631,
+      "naive_mape": 9.9178
     },
     "backtest": {
-      "arima_mape": 61.276,
-      "arima_rmse": 21.8769,
-      "naive_mape": 38.1506,
-      "improvement_pp": -23.1254
+      "selected_mape": 7.6484,
+      "selected_rmse": 44.3133,
+      "naive_mape": 12.0782,
+      "improvement_pp": 4.4298
     }
   },
-  "objetivo_cumplido": false
+  "artefactos": {
+    "pkl": "/opt/airflow/models/final_model_optuna.pkl",
+    "results": "/opt/airflow/reports/metrics/07_final_selection_by_category.csv"
+  },
+  "objetivo_cumplido": true
 }

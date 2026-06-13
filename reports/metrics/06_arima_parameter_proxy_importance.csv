@@ -1,0 +1,12 @@
+category,dataset_scope,order,term,component_type,coefficient,abs_coefficient,proxy_importance_share_pct
+beleza_saude,full_history,"(2, 0, 0)",const,constant,29077.26118587781,29077.26118587781,91.44750905937302
+beleza_saude,full_history,"(2, 0, 0)",ar.L1,autoregressive,0.22791015570733725,0.22791015570733725,0.0007167736980294503
+beleza_saude,full_history,"(2, 0, 0)",ar.L2,autoregressive,0.7697774182549292,0.7697774182549292,0.0024209373427424912
+beleza_saude,full_history,"(2, 0, 0)",sigma2,variance,2718.4094939710803,2718.4094939710803,8.549353229586202
+cama_mesa_banho,full_history,"(1, 0, 1)",const,constant,646.2948597167464,646.2948597167464,10.00251953340532
+cama_mesa_banho,full_history,"(1, 0, 1)",ar.L1,autoregressive,0.8361419504136173,0.8361419504136173,0.01294072831613938
+cama_mesa_banho,full_history,"(1, 0, 1)",ma.L1,moving_average,-1.0000057548572048,1.0000057548572048,0.015476801255793343
+cama_mesa_banho,full_history,"(1, 0, 1)",sigma2,variance,5813.189638424477,5813.189638424477,89.96906293702274
+esporte_lazer,full_history,"(0, 1, 2)",ma.L1,moving_average,-0.03799278352581921,0.03799278352581921,0.0007972985764461873
+esporte_lazer,full_history,"(0, 1, 2)",ma.L2,moving_average,0.3895539803535652,0.3895539803535652,0.008174995490229655
+esporte_lazer,full_history,"(0, 1, 2)",sigma2,variance,4764.7613859901585,4764.7613859901585,99.99102770593333

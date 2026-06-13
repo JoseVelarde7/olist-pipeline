@@ -329,78 +329,48 @@ def olist_demand_pipeline():
         }
 
     # ──────────────────────────────────────────────
-    # PIPELINE ML — 4. Entrenar ARIMA
+    # PIPELINE ML — 4. Entrenar ARIMA + Optuna
     # ──────────────────────────────────────────────
     @task(task_id="train_arima")
     def train_arima_task(monthly_info: dict) -> dict:
         """
-        Entrena ARIMA(1,1,1) por categoría con splits train/validation/backtest.
-        Réplica corregida del notebook 03_train_arima_sarima_olist.ipynb del equipo:
-          - PeriodIndex correcto para statsmodels
-          - Backtest con reentrenamiento en train+val
+        Entrena Naive + ARIMA con optimización Optuna por categoría.
+        Versión PRO integrada desde 03_train_arima_sarima_olist_optuna.ipynb del equipo:
+          - Optuna optimiza (p, d, q) por categoría (40 trials, TPE sampler, seed=42)
+          - Optuna selecciona la mejor regla naive por categoría (20 trials)
+          - Selección final por categoría: mejor entre naive y ARIMA vía selection_score
+          - Penalización por inestabilidad de predicciones
+          - Exporta modelo final .pkl en models/
           - Integración con MLflow
         """
         import pandas as pd
 
-        from src.models.arima_model import DEFAULT_ARIMA_ORDER, run_arima_experiment
+        from src.models.arima_optuna_model import run_optuna_experiment
 
         train_end = monthly_info["train_end"]
         val_end   = monthly_info["val_end"]
 
-        df_monthly = pd.read_parquet(monthly_info["monthly_path"])
-        print(f"Base mensual: {df_monthly.shape} | Categorías: {df_monthly['product_category_name'].nunique()}")
+        # Usa el CSV validado del equipo (mismo que el notebook 03 del sprint 3).
+        # El parquet generado por el pipeline contiene datos sintéticos de sep-2018
+        # que contaminan demand_next_month de agosto, distorsionando las métricas.
+        import pandas as pd
+        CSV_PATH = Path("/opt/airflow/src/new_data/monthly_base_olist.csv")
+        df_monthly = pd.read_csv(CSV_PATH)
+
+        print(f"Base mensual (CSV equipo): {df_monthly.shape} | Categorías: {df_monthly['product_category_name'].nunique()}")
         print(f"Splits — train_end: {train_end}  val_end: {val_end}")
-        print(f"Orden ARIMA: {DEFAULT_ARIMA_ORDER}")
-
-        run_name = f"airflow_arima_{train_end[:7].replace('-', '')}"
-        output   = run_arima_experiment(
-            df=df_monthly,
-            train_end=train_end,
-            val_end=val_end,
-            arima_order=DEFAULT_ARIMA_ORDER,
-            run_name=run_name,
-        )
-        results = output["results"]
-
-        def _mean(split, model, col):
-            sub = results[(results["dataset"] == split) & (results["model"] == model)]
-            if sub.empty or sub[col].isna().all():
-                return None
-            return round(float(sub[col].mean(skipna=True)), 4)
-
-        val_mape_arima = _mean("validation", "ARIMA",       "mape")
-        val_mape_naive = _mean("validation", "naive_lag_1", "mape")
-        bt_mape_arima  = _mean("backtest",   "ARIMA",       "mape")
-        bt_mape_naive  = _mean("backtest",   "naive_lag_1", "mape")
-        bt_rmse_arima  = _mean("backtest",   "ARIMA",       "rmse")
-
-        print(f"\nResultados (media entre categorías):")
-        print(f"  Validation — ARIMA MAPE: {val_mape_arima}%  |  Naive MAPE: {val_mape_naive}%")
-        print(f"  Backtest   — ARIMA MAPE: {bt_mape_arima}%   |  Naive MAPE: {bt_mape_naive}%")
 
         REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-        results_path = str(REPORTS_DIR / "arima_results_by_category.csv")
-        results.to_csv(results_path, index=False)
+        MODELS_DIR.mkdir(parents=True, exist_ok=True)
 
-        improvement = (
-            round(bt_mape_naive - bt_mape_arima, 4)
-            if bt_mape_naive is not None and bt_mape_arima is not None
-            else None
+        return run_optuna_experiment(
+            df=df_monthly,
+            output_dir=REPORTS_DIR,
+            models_dir=MODELS_DIR,
+            train_end_str=train_end,
+            val_end_str=val_end,
+            categories=["beleza_saude", "cama_mesa_banho", "esporte_lazer"],
         )
-
-        return {
-            "arima_order":      str(DEFAULT_ARIMA_ORDER),
-            "n_categories":     int(results["category"].nunique()),
-            "val_mape_arima":   val_mape_arima,
-            "val_mape_naive":   val_mape_naive,
-            "bt_mape_arima":    bt_mape_arima,
-            "bt_mape_naive":    bt_mape_naive,
-            "bt_rmse_arima":    bt_rmse_arima,
-            "improvement_pp":   improvement,
-            "results_path":     results_path,
-            "train_end":        train_end,
-            "val_end":          val_end,
-        }
 
     # ──────────────────────────────────────────────
     # PIPELINE ML — 5. Reporte final
@@ -409,29 +379,35 @@ def olist_demand_pipeline():
     def save_report(arima_metrics: dict) -> None:
         REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
+        bt_mape = arima_metrics.get("bt_mape_selected")
+
         summary = {
             "execution_date": datetime.now().isoformat(),
-            "model":          "ARIMA",
-            "arima_order":    arima_metrics["arima_order"],
-            "n_categories":   arima_metrics["n_categories"],
-            "train_end":      arima_metrics["train_end"],
-            "val_end":        arima_metrics["val_end"],
+            "model":          arima_metrics.get("model", "ARIMA+Optuna"),
+            "n_categories":   arima_metrics.get("n_categories"),
+            "train_end":      arima_metrics.get("train_end"),
+            "val_end":        arima_metrics.get("val_end"),
+            "optuna": {
+                "n_trials_arima": arima_metrics.get("n_trials_arima"),
+                "n_trials_naive": arima_metrics.get("n_trials_naive"),
+            },
             "metrics": {
                 "validation": {
-                    "arima_mape": arima_metrics["val_mape_arima"],
-                    "naive_mape": arima_metrics["val_mape_naive"],
+                    "selected_mape": arima_metrics.get("val_mape_selected"),
+                    "naive_mape":    arima_metrics.get("val_mape_naive"),
                 },
                 "backtest": {
-                    "arima_mape":    arima_metrics["bt_mape_arima"],
-                    "arima_rmse":    arima_metrics["bt_rmse_arima"],
-                    "naive_mape":    arima_metrics["bt_mape_naive"],
-                    "improvement_pp": arima_metrics["improvement_pp"],
+                    "selected_mape":  bt_mape,
+                    "selected_rmse":  arima_metrics.get("bt_rmse_selected"),
+                    "naive_mape":     arima_metrics.get("bt_mape_naive"),
+                    "improvement_pp": arima_metrics.get("improvement_pp"),
                 },
             },
-            "objetivo_cumplido": (
-                arima_metrics["bt_mape_arima"] is not None
-                and arima_metrics["bt_mape_arima"] < 25.0
-            ),
+            "artefactos": {
+                "pkl":     arima_metrics.get("pkl_path"),
+                "results": arima_metrics.get("results_path"),
+            },
+            "objetivo_cumplido": bt_mape is not None and bt_mape < 25.0,
         }
 
         output_path = REPORTS_DIR / "pipeline_summary.json"

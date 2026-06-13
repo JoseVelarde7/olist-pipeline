@@ -1,0 +1,22 @@
+year_month,dataset,model_family,model,category,actual,prediction
+2018-01-01,validation,arima,"ARIMA(2, 0, 0)",beleza_saude,589.0,578.8149544324588
+2018-02-01,validation,arima,"ARIMA(2, 0, 0)",beleza_saude,599.0,507.6699866337585
+2018-03-01,validation,arima,"ARIMA(2, 0, 0)",beleza_saude,613.0,660.5277594653489
+2018-04-01,validation,arima,"ARIMA(2, 0, 0)",beleza_saude,667.0,670.1453925055575
+2018-05-01,validation,arima,"ARIMA(2, 0, 0)",beleza_saude,786.0,691.8591529721543
+2018-06-01,backtest,arima,"ARIMA(2, 0, 0)",beleza_saude,692.0,686.9066726083438
+2018-07-01,backtest,arima,"ARIMA(2, 0, 0)",beleza_saude,762.0,733.9411268475505
+2018-01-01,validation,naive,naive_ma_2,cama_mesa_banho,575.0,570.0
+2018-02-01,validation,naive,naive_ma_2,cama_mesa_banho,636.0,625.0
+2018-03-01,validation,naive,naive_ma_2,cama_mesa_banho,595.0,605.5
+2018-04-01,validation,naive,naive_ma_2,cama_mesa_banho,593.0,615.5
+2018-05-01,validation,naive,naive_ma_2,cama_mesa_banho,646.0,594.0
+2018-06-01,backtest,naive,naive_ma_2,cama_mesa_banho,507.0,619.5
+2018-07-01,backtest,naive,naive_ma_2,cama_mesa_banho,550.0,576.5
+2018-01-01,validation,naive,naive_lag_1,esporte_lazer,559.0,568.0
+2018-02-01,validation,naive,naive_lag_1,esporte_lazer,636.0,559.0
+2018-03-01,validation,naive,naive_lag_1,esporte_lazer,516.0,636.0
+2018-04-01,validation,naive,naive_lag_1,esporte_lazer,448.0,516.0
+2018-05-01,validation,naive,naive_lag_1,esporte_lazer,369.0,448.0
+2018-06-01,backtest,naive,naive_lag_1,esporte_lazer,407.0,369.0
+2018-07-01,backtest,naive,naive_lag_1,esporte_lazer,429.0,407.0

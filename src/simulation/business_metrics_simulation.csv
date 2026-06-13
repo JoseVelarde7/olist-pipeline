@@ -1,0 +1,4 @@
+product_category_name,avg_error_units,total_overstock_units,total_stockout_units,avg_impact_revenue,total_impact_revenue,observations
+beleza_saude,-36.3,272.0,998.0,-5124.69412098979,-102493.88241979579,20
+cama_mesa_banho,-27.25,683.0,1228.0,-2963.047304506005,-59260.946090120095,20
+esporte_lazer,-20.6,392.0,804.0,-2944.668421347603,-58893.36842695205,20
